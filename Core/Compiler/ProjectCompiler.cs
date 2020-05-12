@@ -34,8 +34,8 @@ namespace TestMyCode.Csharp.Core.Compiler
                 {
                     throw new Exception("The compilation failed");
                 }
-
-                string outputPath = project.GetPropertyValue("OutputPath");
+                
+                string outputPath = project.GetPropertyValue("OutputPath").Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
                 string assemblyName = project.GetPropertyValue("AssemblyName");
 
                 string assemblyPath = Path.Combine(projectRoot, outputPath, $"{assemblyName}.dll");
