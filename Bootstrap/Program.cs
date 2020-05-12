@@ -43,7 +43,7 @@ namespace TestMyCode.Csharp.Bootstrap
                 {
                     "--output-file",
                     "-o"
-                }, description: "The output file used to write results", getDefaultValue: () => new FileInfo("results.json"))
+                }, description: "The output file used to write results")
             };
 
             rootCommand.Handler = CommandHandler.Create(async (bool generatePointsFile, DirectoryInfo runTests, FileInfo outputFile) =>
@@ -65,7 +65,9 @@ namespace TestMyCode.Csharp.Bootstrap
                         testRunner.RunTests(assemblyPath);
                     }
 
-                    using FileStream stream = outputFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
+                    FileInfo resultsFile = outputFile ?? new FileInfo(Path.Combine(runTests.FullName, ".tmc_test_results.json"));
+
+                    using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
 
                     await JsonSerializer.SerializeAsync(stream, testRunner.TestResults);
                 }
