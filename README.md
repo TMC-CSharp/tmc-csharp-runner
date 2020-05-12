@@ -1,5 +1,4 @@
 # TMC-C#-Runner
 
 ## Documentation
-- [Backlogs](https://github.com/TMC-C/backlog/projects)
-- [Working hours](https://helsinkifi-my.sharepoint.com/:x:/g/personal/cartsamu_ad_helsinki_fi/EeG7r-x0BXJIjDl-lnjfjjEBT2I4eavoASpyQIBAtjLCqg?e=JBSJ1l)
+- [Backlogs, Working hours](https://docs.google.com/spreadsheets/d/1Rt5mwHxZ2K8hD5x_bWhNBSTf3l27u-j-_Dcka2V3l10/edit#gid=262870504)
