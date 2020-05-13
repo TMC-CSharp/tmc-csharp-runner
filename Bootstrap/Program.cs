@@ -30,11 +30,16 @@ namespace TestMyCode.Csharp.Bootstrap
                     "-p",
                 }, description: "Generates JSON file containing all the points that can be achieved from given project."),
 
-                new Option<DirectoryInfo>(aliases: new[]
+                new Option<bool>(aliases: new[]
                 {
                     "--run-tests",
                     "-t"
-                }, description: "Run tests for the project.")
+                }, description: "Runs tests for the project, by default using the working directory."),
+
+                new Option<DirectoryInfo>(aliases: new[]
+                {
+                    "--run-tests-dir"
+                }, description: "Sets the directory where the project that should be run is located at.")
                 {
                     Argument = new Argument<DirectoryInfo>().ExistingOnly()
                 },
@@ -43,29 +48,31 @@ namespace TestMyCode.Csharp.Bootstrap
                 {
                     "--output-file",
                     "-o"
-                }, description: "The output file used to write results")
+                }, description: "The output file used to write results.")
             };
 
-            rootCommand.Handler = CommandHandler.Create(async (bool generatePointsFile, DirectoryInfo runTests, FileInfo outputFile) =>
+            rootCommand.Handler = CommandHandler.Create(async (bool generatePointsFile, bool runTests, DirectoryInfo runTestsDir, FileInfo outputFile) =>
             {
                 if (generatePointsFile)
                 {
                     //TODO
                 }
 
-                if (!(runTests is null))
+                if (runTests)
                 {
+                    string directory = runTestsDir?.FullName ?? Environment.CurrentDirectory;
+
                     ProjectCompiler compiler = new ProjectCompiler();
                     ProjectTestRunner testRunner = new ProjectTestRunner();
 
-                    ICollection<string> projects = compiler.CompileTestProjects(runTests.FullName);
+                    ICollection<string> projects = compiler.CompileTestProjects(directory);
 
                     foreach (string assemblyPath in projects)
                     {
                         testRunner.RunTests(assemblyPath);
                     }
 
-                    FileInfo resultsFile = outputFile ?? new FileInfo(Path.Combine(runTests.FullName, ".tmc_test_results.json"));
+                    FileInfo resultsFile = outputFile ?? new FileInfo(Path.Combine(directory, ".tmc_test_results.json"));
 
                     using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
 
