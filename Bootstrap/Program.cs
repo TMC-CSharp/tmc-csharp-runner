@@ -73,6 +73,10 @@ namespace TestMyCode.Csharp.Bootstrap
                     }
 
                     FileInfo resultsFile = outputFile ?? new FileInfo(Path.Combine(directory, ".tmc_test_results.json"));
+                    if (resultsFile.Exists)
+                    {
+                        resultsFile.Delete();
+                    }
 
                     using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
 
