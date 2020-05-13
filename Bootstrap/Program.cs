@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestMyCode.Csharp.Core.Compiler;
@@ -55,7 +57,21 @@ namespace TestMyCode.Csharp.Bootstrap
             {
                 if (generatePointsFile)
                 {
-                    //TODO
+                    string directory = runTestsDir?.FullName ?? Environment.CurrentDirectory;
+
+                    ProjectCompiler compiler = new ProjectCompiler();
+                    ProjectTestPointsFinder points = new ProjectTestPointsFinder();
+
+                    ICollection<string> projects = compiler.CompileTestProjects(directory);
+
+                    foreach (string assemblyPath in projects)
+                    {
+                        points.FindPoints(assemblyPath);
+                    }
+
+                    FileInfo resultsFile = outputFile ?? new FileInfo(Path.Combine(directory, ".tmc_available_points.json"));
+
+                    await WriteToFile(resultsFile, points.Points);
                 }
 
                 if (runTests)
@@ -73,6 +89,12 @@ namespace TestMyCode.Csharp.Bootstrap
                     }
 
                     FileInfo resultsFile = outputFile ?? new FileInfo(Path.Combine(directory, ".tmc_test_results.json"));
+
+                    await WriteToFile(resultsFile, testRunner.TestResults);
+                }
+
+                async Task WriteToFile<T>(FileInfo resultsFile, T data)
+                {
                     if (resultsFile.Exists)
                     {
                         resultsFile.Delete();
@@ -80,7 +102,7 @@ namespace TestMyCode.Csharp.Bootstrap
 
                     using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
 
-                    await JsonSerializer.SerializeAsync(stream, testRunner.TestResults);
+                    await JsonSerializer.SerializeAsync(stream, data);
                 }
             });
 
