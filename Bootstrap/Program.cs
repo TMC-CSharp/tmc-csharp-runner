@@ -102,7 +102,10 @@ namespace TestMyCode.Csharp.Bootstrap
 
                     using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
 
-                    await JsonSerializer.SerializeAsync(stream, data);
+                    JsonSerializerOptions options = new JsonSerializerOptions();
+                    options.WriteIndented = true;
+
+                    await JsonSerializer.SerializeAsync(stream, data, options);
                 }
             });
 
