@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Build.Locator;
 using TestMyCode.Csharp.Core.Compiler;
 using TestMyCode.Csharp.Core.Test;
 
@@ -19,9 +21,23 @@ namespace TestMyCode.Csharp.Bootstrap
             string msbuildPath = Environment.GetEnvironmentVariable("MSBUILD_EXE_PATH");
             if (msbuildPath is null)
             {
-                Console.WriteLine("No environment variable MSBUILD_EXE_PATH has been set!");
+                VisualStudioInstance vsInstance = MSBuildLocator.RegisterDefaults();
+                if (vsInstance is null)
+                {
+                    Console.WriteLine("No environment variable MSBUILD_EXE_PATH has been set and we were unable to locate it automatically!");
 
-                return;
+                    return;
+                }
+
+                string msBuildPath = Path.Combine(vsInstance.MSBuildPath, "MSBuild.dll");
+                if (!File.Exists(msBuildPath))
+                {
+                    Console.WriteLine($".NET Core SDK was found in the directory ${msBuildPath} but MSBuild.dll was missing. Please set MSBUILD_EXE_PATH environment variable!");
+
+                    return;
+                }
+
+                Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", msBuildPath);
             }
 
             RootCommand rootCommand = new RootCommand(description: "TMC helper for running C# projects.")
