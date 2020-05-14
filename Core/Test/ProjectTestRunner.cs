@@ -38,6 +38,7 @@ namespace TestMyCode.Csharp.Core.Test
                         Passed = false,
 
                         Name = info.TestDisplayName,
+
                         ErrorStackTrace = info.ExceptionStackTrace
                     });
                 }
@@ -51,7 +52,11 @@ namespace TestMyCode.Csharp.Core.Test
                     {
                         Passed = true,
 
-                        Name = info.TestDisplayName
+                        Name = info.TestDisplayName,
+
+                        //Points = 
+
+                        Message = "test" // unfinished
                     });
                 }
             };

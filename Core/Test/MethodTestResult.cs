@@ -10,6 +10,10 @@ namespace TestMyCode.Csharp.Core.Test
 
         public string Name { get; set; }
 
+        public string[] Points { get; set; }
+
+        public string Message { get; set; }
+
         public string ErrorStackTrace { get; set; }
     }
 }
