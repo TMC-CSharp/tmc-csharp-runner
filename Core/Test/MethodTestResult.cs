@@ -10,7 +10,7 @@ namespace TestMyCode.Csharp.Core.Test
 
         public string Name { get; set; }
 
-        public string[] Points { get; set; }
+        public HashSet<string> Points;
 
         public string Message { get; set; }
 

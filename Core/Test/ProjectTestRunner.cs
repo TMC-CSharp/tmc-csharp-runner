@@ -26,17 +26,6 @@ namespace TestMyCode.Csharp.Core.Test
             using ManualResetEvent manualResetEvent = new ManualResetEvent(false);
             using AssemblyRunner runner = AssemblyRunner.WithoutAppDomain(assembly.Location);
 
-            string[] points = new string[pointsFinder.Points.Count];
-            int i = 0;
-            foreach (HashSet<string> pointSet in pointsFinder.Points.Values)
-            {
-                foreach (string point in pointSet)
-                {
-                    points[i] = point;
-                    i++;
-                }
-            }
-
             runner.OnExecutionComplete += info =>
             {
                 manualResetEvent.Set();
@@ -61,13 +50,23 @@ namespace TestMyCode.Csharp.Core.Test
             {
                 lock (this._TestResults)
                 {
+                    if (pointsFinder.Points.TryGetValue(info.TestDisplayName, out HashSet<string> points))
+                    {
+                        Console.WriteLine("t");
+                        //points = pointsFinder.Points[info.TestDisplayName];
+                    }
+                    else
+                    {
+                        Console.WriteLine("f");
+                    }
+
                     this._TestResults.Add(new MethodTestResult()
                     {
                         Passed = true,
 
                         Name = info.TestDisplayName,
 
-                        Points = points, 
+                        Points = points,
 
                         Message = "test" // unfinished
                     });
