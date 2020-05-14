@@ -20,9 +20,22 @@ namespace TestMyCode.Csharp.Core.Test
         {
             //I would prefer using AssemblyLoadContext but that does not seem to work here, oh well
             Assembly assembly = Assembly.LoadFrom(assemblyPath);
+            ProjectTestPointsFinder pointsFinder = new ProjectTestPointsFinder();
+            pointsFinder.FindPoints(assemblyPath);
 
             using ManualResetEvent manualResetEvent = new ManualResetEvent(false);
             using AssemblyRunner runner = AssemblyRunner.WithoutAppDomain(assembly.Location);
+
+            string[] points = new string[pointsFinder.Points.Count];
+            int i = 0;
+            foreach (HashSet<string> pointSet in pointsFinder.Points.Values)
+            {
+                foreach (string point in pointSet)
+                {
+                    points[i] = point;
+                    i++;
+                }
+            }
 
             runner.OnExecutionComplete += info =>
             {
@@ -54,7 +67,7 @@ namespace TestMyCode.Csharp.Core.Test
 
                         Name = info.TestDisplayName,
 
-                        //Points = 
+                        Points = points, 
 
                         Message = "test" // unfinished
                     });
