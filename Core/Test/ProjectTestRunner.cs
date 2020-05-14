@@ -52,12 +52,7 @@ namespace TestMyCode.Csharp.Core.Test
                 {
                     if (pointsFinder.Points.TryGetValue(info.TestDisplayName, out HashSet<string> points))
                     {
-                        Console.WriteLine("t");
-                        //points = pointsFinder.Points[info.TestDisplayName];
-                    }
-                    else
-                    {
-                        Console.WriteLine("f");
+                        points = pointsFinder.Points[info.TestDisplayName];
                     }
 
                     this._TestResults.Add(new MethodTestResult()
@@ -68,7 +63,7 @@ namespace TestMyCode.Csharp.Core.Test
 
                         Points = points,
 
-                        Message = "test" // unfinished
+                        Message = "" // no functionality
                     });
                 }
             };
