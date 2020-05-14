@@ -34,9 +34,11 @@ namespace TestMyCode.Csharp.Core.Test
                         continue;
                     }
 
-                    if (!this._Points.TryGetValue(type.FullName, out HashSet<string> points))
+                    string fullName = $"{type.FullName}.{methodInfo.Name}";
+
+                    if (!this._Points.TryGetValue(fullName, out HashSet<string> points))
                     {
-                        points = this._Points[type.FullName] = new HashSet<string>();
+                        points = this._Points[fullName] = new HashSet<string>();
                     }
 
                     points.Add(pointsAttribute.Name);
