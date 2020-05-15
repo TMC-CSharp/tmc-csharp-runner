@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Bootstrap": {
+      "commandName": "Project",
+      "commandLineArgs": "--project-dir=F:\\Users\\Joni\\Desktop\\TmcTestProject -t -p"
+    }
+  }
+}

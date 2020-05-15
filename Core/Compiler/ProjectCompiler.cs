@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace TestMyCode.Csharp.Core.Compiler
 {
     public class ProjectCompiler
     {
-        private ProjectCollection ProjectCollection { get; }
+        private readonly ProjectCollection ProjectCollection;
 
         public ProjectCompiler()
         {
@@ -26,16 +27,16 @@ namespace TestMyCode.Csharp.Core.Compiler
             {
                 Project project = this.ProjectCollection.LoadProject(projectFile);
 
-                string projectRoot = Path.GetDirectoryName(projectFile);
+                string projectRoot = Path.GetDirectoryName(projectFile) ?? string.Empty;
 
                 this.CleanOutput(projectRoot);
 
-                if (!this.CompileTestProject(project))
+                if (!this.CompileTestProject(project, out IReadOnlyList<string>? compilationErrors))
                 {
-                    throw new Exception("The compilation failed");
+                    throw new CompilationFaultedException(compilationErrors ?? Array.Empty<string>());
                 }
                 
-                string outputPath = project.GetPropertyValue("OutputPath").Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+                string outputPath = project.GetPropertyValue("OutputPath").Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar); //Beautiful fix for directory separators
                 string assemblyName = project.GetPropertyValue("AssemblyName");
 
                 string assemblyPath = Path.Combine(projectRoot, outputPath, $"{assemblyName}.dll");
@@ -65,8 +66,10 @@ namespace TestMyCode.Csharp.Core.Compiler
             }
         }
 
-        private bool CompileTestProject(Project project)
+        private bool CompileTestProject(Project project, out IReadOnlyList<string>? compilationErrors)
         {
+            CompilerOutputLogger logger = new CompilerOutputLogger();
+
             bool build = project.Build(targets: new[]
             {
                 "Clean",
@@ -74,27 +77,39 @@ namespace TestMyCode.Csharp.Core.Compiler
                 "Publish"
             }, loggers: new ILogger[]
             {
-                new CompilerOutputLogger()
+                logger
             });
+
+            compilationErrors = logger.CompileErrors;
 
             return build;
         }
 
         private class CompilerOutputLogger : ILogger
         {
+            private List<string>? _CompileErrors;
+
             public void Initialize(IEventSource eventSource)
             {
                 eventSource.ErrorRaised += (sender, args) =>
                 {
-                    Console.WriteLine("Compilation error: " + args.Message);
+                    this.AddCompileError(args);
                 };
+            }
+
+            private void AddCompileError(BuildErrorEventArgs args)
+            {
+                this._CompileErrors ??= new List<string>();
+                this._CompileErrors.Add($"Error {args.Code} - {args.Message} in a {args.File} on a line {args.LineNumber}");
             }
 
             public void Shutdown()
             {
             }
 
-            string ILogger.Parameters { get; set; }
+            internal IReadOnlyList<string>? CompileErrors => this._CompileErrors;
+
+            string ILogger.Parameters { get; set; } = string.Empty;
 
             LoggerVerbosity ILogger.Verbosity
             {
