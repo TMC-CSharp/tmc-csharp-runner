@@ -17,7 +17,7 @@ namespace TestMyCode.Csharp.Core.Test
 
         public HashSet<string> Points { get; set; } = MethodTestResult.EMPTY_HASH_SET;
 
-        public string ErrorStackTrace { get; set; } = string.Empty;
+        public IList<string> ErrorStackTrace { get; set; } = Array.Empty<string>();
 
         internal MethodTestResult()
         {
@@ -45,8 +45,10 @@ namespace TestMyCode.Csharp.Core.Test
                 Name = info.TestDisplayName,
                 Message = info.ExceptionMessage,
 
-                ErrorStackTrace = info.ExceptionStackTrace
+                ErrorStackTrace = StackTraceToList(info.ExceptionStackTrace)
             };
+
+            static string[] StackTraceToList(string stackTrace) => stackTrace.Split(Environment.NewLine);
         }
     }
 }
