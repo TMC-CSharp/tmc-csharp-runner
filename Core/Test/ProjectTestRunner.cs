@@ -50,7 +50,7 @@ namespace TestMyCode.Csharp.Core.Test
             {
                 lock (this._TestResults)
                 {
-                    pointsFinder.Points.TryGetValue(info.TestDisplayName, out HashSet<string> points))
+                    pointsFinder.Points.TryGetValue(info.TestDisplayName, out HashSet<string> points);
 
                     this._TestResults.Add(new MethodTestResult()
                     {
