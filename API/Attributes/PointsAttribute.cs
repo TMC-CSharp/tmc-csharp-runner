@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestMyCode.Csharp.API.Attributes
+namespace TestMyCode.CSharp.API.Attributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class PointsAttribute : Attribute

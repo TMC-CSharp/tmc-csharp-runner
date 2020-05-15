@@ -8,7 +8,7 @@ using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
 using Xunit.Runners;
 
-namespace TestMyCode.Csharp.Core.Compiler
+namespace TestMyCode.CSharp.Core.Compiler
 {
     public class ProjectCompiler
     {

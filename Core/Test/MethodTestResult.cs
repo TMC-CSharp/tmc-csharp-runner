@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Xunit.Runners;
 
-namespace TestMyCode.Csharp.Core.Test
+namespace TestMyCode.CSharp.Core.Test
 {
     public class MethodTestResult
     {

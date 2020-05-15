@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TestMyCode.Csharp.Core.Compiler
+namespace TestMyCode.CSharp.Core.Compiler
 {
     public class CompilationFaultedException : Exception
     {

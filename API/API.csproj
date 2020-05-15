@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>TestMyCode.Csharp.API</RootNamespace>
+    <RootNamespace>TestMyCode.CSharp.API</RootNamespace>
     <Nullable>enable</Nullable>
+    <PackageId>TestMyCode.CSharp.API</PackageId>
+    <Authors>TestMyCode</Authors>
+    <Product>TestMyCode CSharp API</Product>
   </PropertyGroup>
 
 </Project>

@@ -9,11 +9,11 @@ using System.Runtime.Loader;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
-using TestMyCode.Csharp.Core.Compiler;
-using TestMyCode.Csharp.Core.Data;
-using TestMyCode.Csharp.Core.Test;
+using TestMyCode.CSharp.Core.Compiler;
+using TestMyCode.CSharp.Core.Data;
+using TestMyCode.CSharp.Core.Test;
 
-namespace TestMyCode.Csharp.Bootstrap
+namespace TestMyCode.CSharp.Bootstrap
 {
     public static class Program
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using TestMyCode.Csharp.Core.Data;
+using TestMyCode.CSharp.Core.Data;
 using Xunit.Runners;
 
-namespace TestMyCode.Csharp.Core.Test
+namespace TestMyCode.CSharp.Core.Test
 {
     public class ProjectTestRunner
     {

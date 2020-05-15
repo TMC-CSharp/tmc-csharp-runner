@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>TestMyCode.Csharp.Core</RootNamespace>
+    <RootNamespace>TestMyCode.CSharp.Core</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Microsoft.Build.Tasks;
-using TestMyCode.Csharp.API.Attributes;
-using TestMyCode.Csharp.Core.Compiler;
+using TestMyCode.CSharp.API.Attributes;
+using TestMyCode.CSharp.Core.Compiler;
 
-namespace TestMyCode.Csharp.Core.Data
+namespace TestMyCode.CSharp.Core.Data
 {
     public class TestProjectData
     {
