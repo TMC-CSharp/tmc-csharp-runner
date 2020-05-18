@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
+using TestMyCode.CSharp.Core.Extensions;
 using Xunit.Runners;
 
 namespace TestMyCode.CSharp.Core.Compiler
@@ -100,7 +101,7 @@ namespace TestMyCode.CSharp.Core.Compiler
             private void AddCompileError(BuildErrorEventArgs args)
             {
                 this._CompileErrors ??= new List<string>();
-                this._CompileErrors.Add($"Error {args.Code} - {args.Message} in a {args.File} on a line {args.LineNumber}");
+                this._CompileErrors.Add($"Error {args.Code} - {args.Message} in the {args.File} on a line {args.LineNumber}. {args.GetNoobFriendlyTip()}");
             }
 
             public void Shutdown()

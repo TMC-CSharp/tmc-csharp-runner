@@ -33,8 +33,28 @@ namespace TestMyCode.CSharp.Bootstrap
 
                 string projectDirectory = projectDir?.FullName ?? Environment.CurrentDirectory;
 
+                ProjectCompiler compiler = new ProjectCompiler();
+
+                ICollection<string> assemblyPaths;
+
+                try
+                {
+                    assemblyPaths = compiler.CompileTestProjects(projectDirectory);
+                }
+                catch (CompilationFaultedException exception)
+                {
+                    Console.WriteLine(exception.Message);
+
+                    Environment.Exit(1);
+
+                    return;
+                }
+
                 TestProjectData projectData = new TestProjectData();
-                projectData.LoadProjects(projectDirectory);
+                foreach (string assemblyPath in assemblyPaths)
+                {
+                    projectData.LoadProject(assemblyPath);
+                }
 
                 if (generatePointsFile)
                 {

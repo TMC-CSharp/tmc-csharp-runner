@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text;
 using Microsoft.Build.Tasks;
 using TestMyCode.CSharp.API.Attributes;
-using TestMyCode.CSharp.Core.Compiler;
 
 namespace TestMyCode.CSharp.Core.Data
 {
@@ -21,19 +20,13 @@ namespace TestMyCode.CSharp.Core.Data
             this._Points = new Dictionary<string, HashSet<string>>();
         }
 
-        public void LoadProjects(string projectDirectory)
+        public void LoadProject(string assemblyPath)
         {
-            ProjectCompiler compiler = new ProjectCompiler();
+            //I would prefer using AssemblyLoadContext but then xUnit can't find the assembly
+            //xUnit only accepts assembly location and not the assembly itself
+            Assembly assembly = Assembly.LoadFrom(assemblyPath);
 
-            ICollection<string> assemblyPaths = compiler.CompileTestProjects(projectDirectory);
-            foreach (string assemblyPath in assemblyPaths)
-            {
-                //I would prefer using AssemblyLoadContext but then xUnit can't find the assembly
-                //xUnit only accepts assembly location and not the assembly itself
-                Assembly assembly = Assembly.LoadFrom(assemblyPath);
-
-                this.LoadAssembly(assembly);
-            }
+            this.LoadAssembly(assembly);
         }
 
         public void LoadAssembly(Assembly assembly)
