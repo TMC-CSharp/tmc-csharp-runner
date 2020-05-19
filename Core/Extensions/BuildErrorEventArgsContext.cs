@@ -9,10 +9,19 @@ namespace TestMyCode.CSharp.Core.Extensions
     {
         internal static string GetNoobFriendlyTip(this BuildErrorEventArgs @this)
         {
-            return @this.Code switch
+            switch (@this.Code)
             {
-                "CS0103" => "Did you name your classes incorrectly or forgot to add correct imports?",
-                _ => string.Empty
+                case "CS0103":
+                    return "Did you name your classes incorrectly or forgot to add correct imports?";
+                case "CS1026":
+                case "CS1513":
+                    return "Make sure you have the same number of opening and closing brackets.";
+                case "CS1003":
+                    return @this.Message.Contains("']'")
+                        ? "Make sure you have the same number of opening and closing brackets." 
+                        : string.Empty;
+                default:
+                    return string.Empty;
             };
         }
     }
