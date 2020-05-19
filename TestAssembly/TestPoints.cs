@@ -9,7 +9,6 @@ namespace TestMyCode.CSharp.TestAssembly
     [Points("1")]
     public class TestPoints
     {
-        [Fact]
         [Points("1.3")]
         public void TestWithPoints()
         {
