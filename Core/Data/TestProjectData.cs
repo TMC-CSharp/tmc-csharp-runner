@@ -45,7 +45,7 @@ namespace TestMyCode.CSharp.Core.Data
                 foreach (MethodInfo methodInfo in type.GetMethods())
                 {
                     PointsAttribute? methodAttribute = methodInfo.GetCustomAttribute<PointsAttribute>();
-                    if (methodAttribute is null)
+                    if (typeAttribute is null && methodAttribute is null)
                     {
                         continue;
                     }
@@ -62,7 +62,10 @@ namespace TestMyCode.CSharp.Core.Data
                         points.Add(typeAttribute.Name);
                     }
 
-                    points.Add(methodAttribute.Name);
+                    if (!(methodAttribute is null))
+                    {
+                        points.Add(methodAttribute.Name);
+                    }
                 }
             }
         }
