@@ -10,5 +10,5 @@ script:
  - cd Tests
  - dotnet test --collect:"XPlat Code Coverage"
 after_success:
- - pwd
- - reportgenerator "-reports:TestResults/*/coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
+ - dotnet tool install -g coveralls.net --version 1.0.0
+ - csmacnz.Coveralls --opencover -i TestResults/*/coverage.cobertura.xml --useRelativePaths
