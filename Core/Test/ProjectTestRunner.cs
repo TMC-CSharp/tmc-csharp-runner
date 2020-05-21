@@ -57,6 +57,9 @@ namespace TestMyCode.CSharp.Core.Test
             //We don't want to exit before all of the tests have ran
             //This will be signaled once all of the tests have been ran
             testsCompled.WaitOne();
+
+            //OnExecutionComplete is invoked before setting the Status so spin here until it changes
+            SpinWait.SpinUntil(() => runner.Status == AssemblyRunnerStatus.Idle);
         }
 
         private void AddTestResult(MethodTestResult result)
