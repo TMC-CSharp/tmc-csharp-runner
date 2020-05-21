@@ -7,3 +7,6 @@ install:
 script:
  - dotnet restore
  - dotnet build
+after_success:
+ - cd Tests
+ - pwd
