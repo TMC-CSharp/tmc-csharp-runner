@@ -3,7 +3,6 @@ mono: none
 dist: xenial
 dotnet:
  - 3.1
- - 2.1
 install:
  - dotnet restore
 script:
@@ -12,5 +11,9 @@ script:
  - cd Tests
  - dotnet test --collect:"XPlat Code Coverage"
 after_success:
+ - sudo apt-get update
+ - sudo apt-get install apt-transport-https
+ - sudo apt-get update
+ - sudo apt-get install dotnet-sdk-2.1
  - dotnet tool install coveralls.net --tool-path tools
  - ./tools/csmacnz.Coveralls --opencover -i TestResults/*/coverage.cobertura.xml --useRelativePaths
