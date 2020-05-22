@@ -17,4 +17,5 @@ after_success:
  - sudo apt-get install dotnet-sdk-2.1
  - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
  - export COVERALLS_REPO_TOKEN=nwDqYB8ldwuTdiZsmWRksx5aBNsxtZlIq
+ - ls TestResults/
  - ./tools/csmacnz.Coveralls --opencover -i TestResults/*/coverage.cobertura.xml --useRelativePaths
