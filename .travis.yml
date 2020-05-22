@@ -12,5 +12,10 @@ script:
  - dotnet add package coverlet.msbuild
  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 after_success:
- - dotnet add package coveralls.net
- - csmacnz.Coveralls --opencover -i TestResults/*/coverage.cobertura.xml --useRelativePaths
+ - sudo apt-get update
+ - sudo apt-get install apt-transport-https
+ - sudo apt-get update
+ - sudo apt-get install dotnet-sdk-2.1
+ - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
+ - export COVERALLS_REPO_TOKEN=nwDqYB8ldwuTdiZsmWRksx5aBNsxtZlIq
+ - ./tools/csmacnz.Coveralls --opencover -i TestResults/*/coverage.cobertura.xml --useRelativePaths
