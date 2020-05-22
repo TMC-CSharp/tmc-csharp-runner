@@ -15,5 +15,5 @@ after_success:
  - sudo apt-get install apt-transport-https
  - sudo apt-get update
  - sudo apt-get install dotnet-sdk-2.1
- - dotnet tool install coveralls.net --tool-path tools
+ - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
  - ./tools/csmacnz.Coveralls --opencover -i TestResults/*/coverage.cobertura.xml --useRelativePaths
