@@ -48,7 +48,7 @@ namespace TestMyCode.CSharp.Core.Test
                 ErrorStackTrace = StackTraceToList(info.ExceptionStackTrace)
             };
 
-            static string[] StackTraceToList(string stackTrace) => stackTrace.Split(Environment.NewLine);
+            static string[] StackTraceToList(string stackTrace) => stackTrace?.Split(Environment.NewLine) ?? Array.Empty<string>();
         }
     }
 }
