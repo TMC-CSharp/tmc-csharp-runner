@@ -5,6 +5,7 @@ using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -19,10 +20,15 @@ namespace TestMyCode.CSharp.Bootstrap
     {
         public static async Task Main(string[] args)
         {
-            Program.FindMsBuild();
+            if (!Program.FindMsBuild())
+            {
+                return;
+            }
+
+            Program.SetMsBuildDepsResolver();
 
             RootCommand rootCommand = Program.GenerateCommands();
-            rootCommand.Handler = CommandHandler.Create(async (bool generatePointsFile, bool runTests, DirectoryInfo projectDir, FileInfo outputFile) =>
+            rootCommand.Handler = CommandHandler.Create(async (bool generatePointsFile, bool runTests, DirectoryInfo? projectDir, FileInfo? outputFile) =>
             {
                 if (!generatePointsFile && !runTests)
                 {
@@ -80,7 +86,7 @@ namespace TestMyCode.CSharp.Bootstrap
                         resultsFile.Delete();
                     }
 
-                    using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
+                    await using FileStream stream = resultsFile.Open(FileMode.OpenOrCreate, FileAccess.Write);
 
                     await JsonSerializer.SerializeAsync(stream, data, options: new JsonSerializerOptions()
                     {
@@ -124,29 +130,43 @@ namespace TestMyCode.CSharp.Bootstrap
             };
         }
 
-        private static void FindMsBuild()
+        private static bool FindMsBuild()
         {
             string? msbuildPath = Environment.GetEnvironmentVariable("MSBUILD_EXE_PATH");
-            if (msbuildPath is null)
+            if (!(msbuildPath is null))
             {
-                VisualStudioInstance vsInstance = MSBuildLocator.RegisterDefaults();
-                if (vsInstance is null)
-                {
-                    Console.WriteLine("No environment variable MSBUILD_EXE_PATH has been set and we were unable to locate it automatically!");
-
-                    return;
-                }
-
-                string msBuildPath = Path.Combine(vsInstance.MSBuildPath, "MSBuild.dll");
-                if (!File.Exists(msBuildPath))
-                {
-                    Console.WriteLine($".NET Core SDK was found in the directory ${msBuildPath} but MSBuild.dll was missing. Please set MSBUILD_EXE_PATH environment variable!");
-
-                    return;
-                }
-
-                Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", msBuildPath);
+                return true;
             }
+
+            VisualStudioInstance? vsInstance = MSBuildLocator.RegisterDefaults();
+            if (!(vsInstance is null))
+            {
+                return true;
+            }
+
+            Console.WriteLine("No environment variable MSBUILD_EXE_PATH has been set and we were unable to locate it automatically!");
+
+            return false;
+        }
+
+        private static void SetMsBuildDepsResolver()
+        {
+            string msbuildDir = Path.GetDirectoryName(Environment.GetEnvironmentVariable("MSBUILD_EXE_PATH"))!;
+
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                AssemblyName name = new AssemblyName(args.Name!);
+
+                string assemblyName = $"{name.Name}.dll";
+                string sdkFileName = Path.Combine(msbuildDir!, assemblyName);
+
+                if (File.Exists(sdkFileName))
+                {
+                    return Assembly.LoadFile(sdkFileName);
+                }
+
+                return null;
+            };
         }
     }
 }

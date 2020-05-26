@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Microsoft.Build.Tasks;
 using TestMyCode.CSharp.API.Attributes;
 
 namespace TestMyCode.CSharp.Core.Data
