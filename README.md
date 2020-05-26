@@ -5,3 +5,12 @@
 
 ## Documentation
 - [Backlogs, Working hours](https://docs.google.com/spreadsheets/d/1Rt5mwHxZ2K8hD5x_bWhNBSTf3l27u-j-_Dcka2V3l10/edit#gid=307372648)
+
+## Generate test coverage report locally using Bash
+
+You need to have cloned the repository on your computer to generate the test report locally.
+
+1. Open terminal in the project root folder
+2. Run "``` bash GetTestReport ```"
+3. Go to direcotry Tests -> coveragereport
+4. Open index.htm on your internet browser
