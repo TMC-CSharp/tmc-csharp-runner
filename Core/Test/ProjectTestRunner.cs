@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using TestMyCode.CSharp.Core.Data;
@@ -34,6 +36,8 @@ namespace TestMyCode.CSharp.Core.Test
             using ManualResetEvent testsCompled = new ManualResetEvent(false);
             using AssemblyRunner runner = AssemblyRunner.WithoutAppDomain(assembly.Location);
 
+            AppDomain.CurrentDomain.AssemblyResolve += this.CreateTestAssemblyResolver(assembly);
+
             runner.OnTestFailed += info =>
             {
                 this.AddTestResult(MethodTestResult.FromFail(info));
@@ -60,6 +64,25 @@ namespace TestMyCode.CSharp.Core.Test
 
             //OnExecutionComplete is invoked before setting the Status so spin here until it changes
             SpinWait.SpinUntil(() => runner.Status == AssemblyRunnerStatus.Idle);
+        }
+
+        private ResolveEventHandler CreateTestAssemblyResolver(Assembly assembly)
+        {
+            return (sender, args) =>
+            {
+                AssemblyName name = new AssemblyName(args.Name!);
+
+                string assemblyName = $"{name.Name}.dll";
+                string dir = Path.GetDirectoryName(assembly.Location)!;
+
+                string assemblyFile = Path.Combine(dir, assemblyName);
+                if (File.Exists(assemblyFile))
+                {
+                    return Assembly.LoadFile(assemblyFile);
+                }
+
+                return null;
+            };
         }
 
         private void AddTestResult(MethodTestResult result)
