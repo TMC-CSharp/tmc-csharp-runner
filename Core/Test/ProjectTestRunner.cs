@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Loader;
 using System.Text;
 using System.Threading;
 using TestMyCode.CSharp.Core.Data;
@@ -33,10 +34,10 @@ namespace TestMyCode.CSharp.Core.Test
 
         public void RunAssemblyTests(Assembly assembly)
         {
-            using ManualResetEvent testsCompled = new ManualResetEvent(false);
-            using AssemblyRunner runner = AssemblyRunner.WithoutAppDomain(assembly.Location);
+            using AssemblyLoadContext.ContextualReflectionScope scope = AssemblyLoadContext.EnterContextualReflection(assembly);
 
-            AppDomain.CurrentDomain.AssemblyResolve += this.CreateTestAssemblyResolver(assembly);
+            using ManualResetEvent testsCompleted = new ManualResetEvent(false);
+            using AssemblyRunner runner = AssemblyRunner.WithoutAppDomain(assembly.Location);
 
             runner.OnTestFailed += info =>
             {
@@ -52,7 +53,7 @@ namespace TestMyCode.CSharp.Core.Test
 
             runner.OnExecutionComplete += info =>
             {
-                testsCompled.Set();
+                testsCompleted.Set();
             };
 
             //This is non blocking call!
@@ -60,29 +61,10 @@ namespace TestMyCode.CSharp.Core.Test
 
             //We don't want to exit before all of the tests have ran
             //This will be signaled once all of the tests have been ran
-            testsCompled.WaitOne();
+            testsCompleted.WaitOne();
 
             //OnExecutionComplete is invoked before setting the Status so spin here until it changes
             SpinWait.SpinUntil(() => runner.Status == AssemblyRunnerStatus.Idle);
-        }
-
-        private ResolveEventHandler CreateTestAssemblyResolver(Assembly assembly)
-        {
-            return (sender, args) =>
-            {
-                AssemblyName name = new AssemblyName(args.Name!);
-
-                string assemblyName = $"{name.Name}.dll";
-                string dir = Path.GetDirectoryName(assembly.Location)!;
-
-                string assemblyFile = Path.Combine(dir, assemblyName);
-                if (File.Exists(assemblyFile))
-                {
-                    return Assembly.LoadFile(assemblyFile);
-                }
-
-                return null;
-            };
         }
 
         private void AddTestResult(MethodTestResult result)

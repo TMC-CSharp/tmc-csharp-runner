@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
 using TestMyCode.CSharp.API.Attributes;
 
@@ -21,9 +24,23 @@ namespace TestMyCode.CSharp.Core.Data
 
         public void LoadProject(string assemblyPath)
         {
-            //I would prefer using AssemblyLoadContext but then xUnit can't find the assembly
-            //xUnit only accepts assembly location and not the assembly itself
-            Assembly assembly = Assembly.LoadFrom(assemblyPath);
+            AssemblyLoadContext alc = new AssemblyLoadContext("TestProjectLoader", isCollectible: true);
+
+            alc.Resolving += (sender, args) =>
+            {
+                string assemblyName = $"{args.Name}.dll";
+                string dir = Path.GetDirectoryName(assemblyPath)!;
+
+                string assemblyFile = Path.Combine(dir, assemblyName);
+                if (File.Exists(assemblyFile))
+                {
+                    return sender.LoadFromAssemblyPath(assemblyFile);
+                }
+
+                return null;
+            };
+
+            Assembly assembly = alc.LoadFromAssemblyPath(assemblyPath);
 
             this.LoadAssembly(assembly);
         }
