@@ -3,14 +3,10 @@ mono: none
 dist: xenial
 dotnet:
  - 3.1
-install:
- - dotnet restore
 script:
  - dotnet restore
  - dotnet build
- - cd Tests
- - dotnet add package coverlet.msbuild
- - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+ - dotnet test Tests/Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover
 after_success:
  - sudo apt-get update
  - sudo apt-get install apt-transport-https
@@ -18,4 +14,4 @@ after_success:
  - sudo apt-get install dotnet-sdk-2.1
  - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
  - export COVERALLS_REPO_TOKEN=nwDqYB8ldwuTdiZsmWRksx5aBNsxtZlIq
- - ./tools/csmacnz.Coveralls --opencover -i coverage.opencover.xml --useRelativePaths
+ - tools/csmacnz.Coveralls --opencover -i Tests/coverage.opencover.xml --useRelativePaths
