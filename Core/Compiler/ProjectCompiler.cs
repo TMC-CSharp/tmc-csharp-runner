@@ -13,11 +13,15 @@ namespace TestMyCode.CSharp.Core.Compiler
 {
     public class ProjectCompiler
     {
+        private const string BIN_PATH = "bin";
+        private const string OUTPUT_PATH = "output";
+
         private readonly ProjectCollection ProjectCollection;
 
         public ProjectCompiler()
         {
             this.ProjectCollection = new ProjectCollection();
+            this.ProjectCollection.SetGlobalProperty("PublishDir", Path.Combine(ProjectCompiler.BIN_PATH, ProjectCompiler.OUTPUT_PATH));
         }
 
         public ICollection<string> CompileTestProjects(string projectPath)
@@ -37,11 +41,10 @@ namespace TestMyCode.CSharp.Core.Compiler
                     throw new CompilationFaultedException(compilationErrors ?? Array.Empty<string>());
                 }
                 
-                string outputPath = project.GetPropertyValue("OutputPath").Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar); //Beautiful fix for directory separators
                 string assemblyName = project.GetPropertyValue("AssemblyName");
 
-                string assemblyPath = Path.Combine(projectRoot, outputPath, $"{assemblyName}.dll");
-
+                string assemblyPath = Path.Combine(projectRoot, ProjectCompiler.BIN_PATH, ProjectCompiler.OUTPUT_PATH, $"{assemblyName}.dll");
+                Console.WriteLine(assemblyPath);
                 files.Add(assemblyPath);
             }
 
