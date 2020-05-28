@@ -65,6 +65,11 @@ namespace TestMyCode.CSharp.Core.Test
 
             //OnExecutionComplete is invoked before setting the Status so spin here until it changes
             SpinWait.SpinUntil(() => runner.Status == AssemblyRunnerStatus.Idle);
+
+            //Give up the time slice
+            //Travis sometimes fails inside the xUnit thread pool while trying to wait for completion
+            //Try to fix this by trying to give the time slice to the thread pool thread
+            Thread.Sleep(1);
         }
 
         private void AddTestResult(MethodTestResult result)

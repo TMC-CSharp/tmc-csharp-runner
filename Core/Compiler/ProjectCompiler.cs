@@ -44,7 +44,7 @@ namespace TestMyCode.CSharp.Core.Compiler
                 string assemblyName = project.GetPropertyValue("AssemblyName");
 
                 string assemblyPath = Path.Combine(projectRoot, ProjectCompiler.BIN_PATH, ProjectCompiler.OUTPUT_PATH, $"{assemblyName}.dll");
-                Console.WriteLine(assemblyPath);
+
                 files.Add(assemblyPath);
             }
 
