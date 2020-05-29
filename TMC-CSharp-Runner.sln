@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootstrap", "Bootstrap\Boot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{43B2D155-CBE9-407E-9EE6-60170BFCB33D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{F4199101-8840-4616-A25D-869E5F0C2B27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{F4199101-8840-4616-A25D-869E5F0C2B27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAssembly", "TestAssembly\TestAssembly.csproj", "{A350F515-23AB-4288-8972-800E05261642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAssembly", "TestAssembly\TestAssembly.csproj", "{A350F515-23AB-4288-8972-800E05261642}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Build.Locator", "MSBuildLocator\src\MSBuildLocator\Microsoft.Build.Locator.csproj", "{342FF612-37EC-41B4-BB5F-CD6A52D5C32E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A350F515-23AB-4288-8972-800E05261642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A350F515-23AB-4288-8972-800E05261642}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A350F515-23AB-4288-8972-800E05261642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342FF612-37EC-41B4-BB5F-CD6A52D5C32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342FF612-37EC-41B4-BB5F-CD6A52D5C32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342FF612-37EC-41B4-BB5F-CD6A52D5C32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342FF612-37EC-41B4-BB5F-CD6A52D5C32E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

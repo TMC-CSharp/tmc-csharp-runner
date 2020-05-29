@@ -138,13 +138,16 @@ namespace TestMyCode.CSharp.Bootstrap
                 return true;
             }
 
-            VisualStudioInstance? vsInstance = MSBuildLocator.RegisterDefaults();
+            VisualStudioInstance? vsInstance = MSBuildLocator.QueryVisualStudioInstances(VisualStudioInstanceQueryOptions.Default)
+                                                             .FirstOrDefault(i => i.Version.Major == Environment.Version.Major && i.Version.Minor == Environment.Version.Minor);
             if (!(vsInstance is null))
             {
+                MSBuildLocator.RegisterInstance(vsInstance);
+
                 return true;
             }
 
-            Console.WriteLine("No environment variable MSBUILD_EXE_PATH has been set and we were unable to locate it automatically!");
+            Console.WriteLine($"No environment variable MSBUILD_EXE_PATH has been set and we were unable to locate it automatically! You need to install SDK for {Environment.Version.ToString(2)}");
 
             return false;
         }
