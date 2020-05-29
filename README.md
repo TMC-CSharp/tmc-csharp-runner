@@ -8,7 +8,7 @@
 
 ## Generate test coverage report locally using Bash
 
-You need to have cloned the repository on your computer to generate the test report locally.
+You must clone the repository on your computer to generate the test report locally.
 
 1. Open terminal in the project root folder
 2. Run "``` bash GetTestReport ```"
