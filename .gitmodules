@@ -1,4 +1,4 @@
 [submodule "MSBuildLocator"]
 	path = MSBuildLocator
-	url = https://github.com/TMC-C/MSBuildLocator
+	url = https://github.com/TMC-CSharp/MSBuildLocator
 	branch = get-all-installed-dotnetsdk-instances
