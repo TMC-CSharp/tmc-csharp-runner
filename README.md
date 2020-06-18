@@ -3,10 +3,15 @@
 [![Build Status](https://travis-ci.com/TMC-CSharp/tmc-csharp-runner.svg?branch=master)](https://travis-ci.com/TMC-CSharp/tmc-csharp-runner)
 [![Coverage Status](https://coveralls.io/repos/github/TMC-CSharp/tmc-csharp-runner/badge.svg?branch=)](https://coveralls.io/github/TMC-CSharp/tmc-csharp-runner?branch=)
 
-## Documentation
-- [Backlogs, Working hours](https://docs.google.com/spreadsheets/d/1Rt5mwHxZ2K8hD5x_bWhNBSTf3l27u-j-_Dcka2V3l10/edit#gid=307372648)
+EXPLANATION HERE
 
-## Generate test coverage report locally using Bash
+## Documentation
+
+[General documentation](https://github.com/TMC-CSharp/tmc-csharp-documentation)
+
+[Developer guide for runner](https://github.com/TMC-CSharp/tmc-csharp-documentation/blob/master/useguide.md)
+
+### Generating test coverage report locally
 
 You must clone the repository on your computer to generate the test report locally.
 
