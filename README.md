@@ -7,9 +7,9 @@ Runs C# code for TestMyCode. Returns the results of the unit tests as a JSON fil
 
 ## Documentation
 
-[General documentation](https://github.com/TMC-CSharp/tmc-csharp-documentation)
+[General documentation](https://github.com/TMC-CSharp/tmc-csharp)
 
-[Developer guide for runner](https://github.com/TMC-CSharp/tmc-csharp-documentation/blob/master/useguide.md)
+[Developer guide for runner](https://github.com/TMC-CSharp/tmc-csharp/blob/master/useguide.md)
 
 ### Generating test coverage report locally
 
