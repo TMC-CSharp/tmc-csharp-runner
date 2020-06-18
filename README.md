@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/TMC-CSharp/tmc-csharp-runner.svg?branch=master)](https://travis-ci.com/TMC-CSharp/tmc-csharp-runner)
 [![Coverage Status](https://coveralls.io/repos/github/TMC-CSharp/tmc-csharp-runner/badge.svg?branch=)](https://coveralls.io/github/TMC-CSharp/tmc-csharp-runner?branch=)
 
-EXPLANATION HERE
+Runs C# code for TestMyCode. Returns the results of the unit tests as a JSON file which tmc-langs can parse,
 
 ## Documentation
 
