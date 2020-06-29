@@ -20,11 +20,15 @@ namespace TestMyCode.CSharp.Tests.Points
         [Theory]
         [InlineData(typeof(TestAssembly.TestPoints), nameof(TestAssembly.TestPoints.TestWithPoints), new[] { "1", "1.3" })]
         [InlineData(typeof(TestAssembly.TestPoints), nameof(TestAssembly.TestPoints.TestWithoutPoints), new[] { "1" })]
+        [InlineData(typeof(TestAssembly.TestPoints), nameof(TestAssembly.TestPoints.NotActuallyTestNoPoints), null)]
+        [InlineData(typeof(TestAssembly.TestPoints), nameof(TestAssembly.TestPoints.Equals), null)]
         public void ClassHasPoints(Type methodClass, string methodName, string[] expect)
         {
-            HashSet<string> points = this.TestProjectData.Points[$"{methodClass.FullName}.{methodName}"];
+            string key = $"{methodClass.FullName}.{methodName}";
 
-            Assert.Equal(points, expect);
+            this.TestProjectData.Points.TryGetValue(key, out HashSet<string> methodPoints);
+
+            Assert.Equal(expect, methodPoints);
         }
     }
 }

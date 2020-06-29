@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
 using TestMyCode.CSharp.API.Attributes;
+using Xunit;
 
 namespace TestMyCode.CSharp.Core.Data
 {
@@ -58,8 +59,18 @@ namespace TestMyCode.CSharp.Core.Data
             {
                 PointsAttribute? typeAttribute = type.GetCustomAttribute<PointsAttribute>();
 
-                foreach (MethodInfo methodInfo in type.GetMethods())
+                foreach (MethodInfo methodInfo in type.GetMethods(BindingFlags.Instance
+                                                                  | BindingFlags.Static //xUnit allows static methods
+                                                                  | BindingFlags.Public
+                                                                  | BindingFlags.NonPublic)) //xUnit allows private methods
                 {
+                    //TheoryAttribute inherits from FactAttribute
+                    FactAttribute? factAttribute = methodInfo.GetCustomAttribute<FactAttribute>();
+                    if (factAttribute is null)
+                    {
+                        continue;
+                    }
+
                     PointsAttribute? methodAttribute = methodInfo.GetCustomAttribute<PointsAttribute>();
                     if (typeAttribute is null && methodAttribute is null)
                     {
