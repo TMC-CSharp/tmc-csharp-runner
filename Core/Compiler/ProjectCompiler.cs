@@ -14,7 +14,7 @@ namespace TestMyCode.CSharp.Core.Compiler
     public class ProjectCompiler
     {
         private const string BIN_PATH = "bin";
-        private const string OUTPUT_PATH = "output";
+        private const string OUTPUT_PATH = "TMC-output";
 
         private readonly ProjectCollection ProjectCollection;
 
@@ -30,19 +30,19 @@ namespace TestMyCode.CSharp.Core.Compiler
 
             foreach (string projectFile in Directory.EnumerateFiles(projectPath, "*Tests.csproj", SearchOption.AllDirectories))
             {
-                Project project = this.ProjectCollection.LoadProject(projectFile);
-
                 string projectRoot = Path.GetDirectoryName(projectFile) ?? string.Empty;
 
+                //Cleanup before loading the project! It may use the files inside obj! That's no good
                 this.CleanOutput(projectRoot);
 
-                if (!this.CompileTestProject(project, out IReadOnlyList<string>? compilationErrors))
-                {
-                    throw new CompilationFaultedException(compilationErrors ?? Array.Empty<string>());
-                }
-                
-                string assemblyName = project.GetPropertyValue("AssemblyName");
+                Project project = this.ProjectCollection.LoadProject(projectFile);
 
+                if (!this.CompileTestProject(project, out CompilerOutputLogger compilationErrors))
+                {
+                    throw new CompilationFaultedException(compilationErrors.CompileErrors);
+                }
+
+                string assemblyName = project.GetPropertyValue("AssemblyName");
                 string assemblyPath = Path.Combine(projectRoot, ProjectCompiler.BIN_PATH, ProjectCompiler.OUTPUT_PATH, $"{assemblyName}.dll");
 
                 files.Add(assemblyPath);
@@ -70,28 +70,41 @@ namespace TestMyCode.CSharp.Core.Compiler
             }
         }
 
-        private bool CompileTestProject(Project project, out IReadOnlyList<string>? compilationErrors)
+        private bool CompileTestProject(Project project, out CompilerOutputLogger logger)
         {
-            CompilerOutputLogger logger = new CompilerOutputLogger();
+            logger = new CompilerOutputLogger();
+
+            bool restore = project.Build(targets: new[]
+            {
+                "Restore",
+            }, loggers: new ILogger[]
+            {
+                logger
+            });
+
+            if (!restore)
+            {
+                return false;
+            }
+
+            //Required for to be able to detect changes made by the Restore target!
+            project.MarkDirty();
+            project.ReevaluateIfNecessary();
 
             bool build = project.Build(targets: new[]
             {
-                "Clean",
-                "Restore",
                 "Publish"
             }, loggers: new ILogger[]
             {
                 logger
             });
 
-            compilationErrors = logger.CompileErrors;
-
             return build;
         }
 
         private class CompilerOutputLogger : ILogger
         {
-            private List<string>? _CompileErrors;
+            private List<string> _CompileErrors = new List<string>();
 
             public void Initialize(IEventSource eventSource)
             {
@@ -103,7 +116,6 @@ namespace TestMyCode.CSharp.Core.Compiler
 
             private void AddCompileError(BuildErrorEventArgs args)
             {
-                this._CompileErrors ??= new List<string>();
                 this._CompileErrors.Add($"Error {args.Code} - {args.Message} in file {args.File} on line {args.LineNumber}. {args.GetNoobFriendlyTip()}");
             }
 
@@ -111,7 +123,7 @@ namespace TestMyCode.CSharp.Core.Compiler
             {
             }
 
-            internal IReadOnlyList<string>? CompileErrors => this._CompileErrors;
+            internal IReadOnlyList<string> CompileErrors => this._CompileErrors;
 
             string ILogger.Parameters { get; set; } = string.Empty;
 
