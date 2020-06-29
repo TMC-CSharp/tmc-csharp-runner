@@ -4,6 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>TestMyCode.CSharp.Core</RootNamespace>
     <Nullable>enable</Nullable>
+    <AssemblyName>TestMyCode.CSharp.Core</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>TestMyCode.CSharp.Core</PackageId>
+    <Authors>TestMyCode</Authors>
+    <RepositoryUrl>https://github.com/TMC-CSharp/tmc-csharp-runner.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
