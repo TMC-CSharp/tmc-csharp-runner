@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>TestMyCode.CSharp.Bootstrap</RootNamespace>
     <Nullable>enable</Nullable>
     <AssemblyName>TestMyCode.CSharp.Bootstrap</AssemblyName>
@@ -13,11 +13,11 @@
     <Authors>TestMyCode</Authors>
     <RepositoryUrl>https://github.com/TMC-CSharp/tmc-csharp-runner.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.0.1</Version>
+    <Version>1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20253.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
   </ItemGroup>
 
   <ItemGroup>

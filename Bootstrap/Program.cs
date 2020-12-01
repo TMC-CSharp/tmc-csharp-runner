@@ -133,14 +133,14 @@ namespace TestMyCode.CSharp.Bootstrap
         private static bool FindMsBuild()
         {
             string? msbuildPath = Environment.GetEnvironmentVariable("MSBUILD_EXE_PATH");
-            if (!(msbuildPath is null))
+            if (msbuildPath is not null)
             {
                 return true;
             }
 
             VisualStudioInstance? vsInstance = MSBuildLocator.QueryVisualStudioInstances(VisualStudioInstanceQueryOptions.Default)
                                                              .FirstOrDefault(i => i.Version.Major == Environment.Version.Major && i.Version.Minor == Environment.Version.Minor);
-            if (!(vsInstance is null))
+            if (vsInstance is not null)
             {
                 MSBuildLocator.RegisterInstance(vsInstance);
 
@@ -158,10 +158,10 @@ namespace TestMyCode.CSharp.Bootstrap
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
-                AssemblyName name = new AssemblyName(args.Name!);
+                AssemblyName name = new AssemblyName(args.Name);
 
                 string assemblyName = $"{name.Name}.dll";
-                string sdkFileName = Path.Combine(msbuildDir!, assemblyName);
+                string sdkFileName = Path.Combine(msbuildDir, assemblyName);
 
                 if (File.Exists(sdkFileName))
                 {

@@ -84,12 +84,12 @@ namespace TestMyCode.CSharp.Core.Data
                         points = this._Points[fullName] = new HashSet<string>(0);
                     }
 
-                    if (!(typeAttribute is null))
+                    if (typeAttribute is not null)
                     {
                         points.Add(typeAttribute.Name);
                     }
 
-                    if (!(methodAttribute is null))
+                    if (methodAttribute is not null)
                     {
                         points.Add(methodAttribute.Name);
                     }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>TestMyCode.CSharp.Core</RootNamespace>
     <Nullable>enable</Nullable>
     <AssemblyName>TestMyCode.CSharp.Core</AssemblyName>
@@ -12,11 +12,11 @@
     <Authors>TestMyCode</Authors>
     <RepositoryUrl>https://github.com/TMC-CSharp/tmc-csharp-runner.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.2</Version>
+    <Version>1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build" Version="16.5.0">
+    <PackageReference Include="Microsoft.Build" Version="16.8.0">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
