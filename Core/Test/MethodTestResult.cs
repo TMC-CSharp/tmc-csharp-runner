@@ -36,13 +36,16 @@ namespace TestMyCode.CSharp.Core.Test
             };
         }
 
-        internal static MethodTestResult FromFail(TestFailedInfo info)
+        internal static MethodTestResult FromFail(TestFailedInfo info, HashSet<string>? points = default)
         {
             return new MethodTestResult()
             {
                 Passed = false,
 
                 Name = info.TestDisplayName,
+
+                Points = points ?? MethodTestResult.EMPTY_HASH_SET,
+
                 Message = info.ExceptionMessage,
 
                 ErrorStackTrace = StackTraceToList(info.ExceptionStackTrace)

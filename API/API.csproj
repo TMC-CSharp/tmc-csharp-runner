@@ -12,6 +12,6 @@
     <Authors>TestMyCode</Authors>
     <RepositoryUrl>https://github.com/TMC-CSharp/tmc-csharp-runner.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.1</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 </Project>

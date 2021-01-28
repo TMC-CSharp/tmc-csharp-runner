@@ -41,7 +41,9 @@ namespace TestMyCode.CSharp.Core.Test
 
             runner.OnTestFailed += info =>
             {
-                this.AddTestResult(MethodTestResult.FromFail(info));
+                this.ProjectData.Points.TryGetValue(info.TestDisplayName, out HashSet<string>? points);
+
+                this.AddTestResult(MethodTestResult.FromFail(info, points));
             };
 
             runner.OnTestPassed += info =>
