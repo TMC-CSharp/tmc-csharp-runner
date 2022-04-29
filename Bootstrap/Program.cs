@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Loader;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
@@ -20,12 +16,7 @@ namespace TestMyCode.CSharp.Bootstrap
     {
         public static async Task Main(string[] args)
         {
-            if (!Program.FindMsBuild())
-            {
-                return;
-            }
-
-            Program.SetMsBuildDepsResolver();
+            MSBuildLocator.RegisterDefaults();
 
             RootCommand rootCommand = Program.GenerateCommands();
             rootCommand.Handler = CommandHandler.Create(async (bool generatePointsFile, bool runTests, DirectoryInfo? projectDir, FileInfo? outputFile) =>
@@ -127,48 +118,6 @@ namespace TestMyCode.CSharp.Bootstrap
                     "--output-file",
                     "-o"
                 }, description: "The output file used to write results.")
-            };
-        }
-
-        private static bool FindMsBuild()
-        {
-            string? msbuildPath = Environment.GetEnvironmentVariable("MSBUILD_EXE_PATH");
-            if (msbuildPath is not null)
-            {
-                return true;
-            }
-
-            VisualStudioInstance? vsInstance = MSBuildLocator.QueryVisualStudioInstances(VisualStudioInstanceQueryOptions.Default)
-                                                             .FirstOrDefault(i => i.Version.Major == Environment.Version.Major && i.Version.Minor == Environment.Version.Minor);
-            if (vsInstance is not null)
-            {
-                MSBuildLocator.RegisterInstance(vsInstance);
-
-                return true;
-            }
-
-            Console.WriteLine($"No environment variable MSBUILD_EXE_PATH has been set and we were unable to locate it automatically! You need to install SDK for {Environment.Version.ToString(2)}");
-
-            return false;
-        }
-
-        private static void SetMsBuildDepsResolver()
-        {
-            string msbuildDir = Path.GetDirectoryName(Environment.GetEnvironmentVariable("MSBUILD_EXE_PATH"))!;
-
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-            {
-                AssemblyName name = new AssemblyName(args.Name);
-
-                string assemblyName = $"{name.Name}.dll";
-                string sdkFileName = Path.Combine(msbuildDir, assemblyName);
-
-                if (File.Exists(sdkFileName))
-                {
-                    return Assembly.LoadFile(sdkFileName);
-                }
-
-                return null;
             };
         }
     }
