@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Threading;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
 using TestMyCode.CSharp.Core.Extensions;
-using Xunit.Runners;
 
 namespace TestMyCode.CSharp.Core.Compiler
 {

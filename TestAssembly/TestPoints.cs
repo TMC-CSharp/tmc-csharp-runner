@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TestMyCode.CSharp.API.Attributes;
+﻿using TestMyCode.CSharp.API.Attributes;
 using Xunit;
 
 namespace TestMyCode.CSharp.TestAssembly
